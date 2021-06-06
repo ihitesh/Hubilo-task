@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserDetails, Loading } from "../../components";
@@ -33,9 +33,13 @@ const Users = () => {
   const totalAlbums = useSelector((state) => state.albums.length);
   const allUsers = useSelector((state) => state.users);
 
-  const onSuccess = (users) => {
-    dispatch({ type: UserActionTypes.SAVE, payload: { users } });
-  };
+  const onSuccess = useCallback(
+    (users) => {
+      dispatch({ type: UserActionTypes.SAVE, payload: { users } });
+    },
+    [dispatch]
+  );
+
   const shouldRefetch = !allUsers.length;
   const [isLoading, error] = useAsyncFetch("/users", onSuccess, shouldRefetch);
 

@@ -14,9 +14,7 @@ const useAsyncFetch = (url, onSuccess, shouldRefetch) => {
       setError("Error! please try again.");
     }
     setIsLoading(false);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [onSuccess, url]);
 
   // to fetch data on load
   useEffect(() => {

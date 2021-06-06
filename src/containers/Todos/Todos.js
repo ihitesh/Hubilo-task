@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Loading, TodoDetails } from "../../components";
@@ -32,9 +32,13 @@ const Todos = () => {
   const totalUsers = useSelector((state) => state.users.length);
   const allTodos = useSelector((state) => state.todos);
 
-  const onSuccess = (todos) => {
-    dispatch({ type: TodoActionTypes.SAVE, payload: { todos } });
-  };
+  const onSuccess = useCallback(
+    (todos) => {
+      dispatch({ type: TodoActionTypes.SAVE, payload: { todos } });
+    },
+    [dispatch]
+  );
+
   const shouldRefetch = !allTodos.length;
   const [isLoading, error] = useAsyncFetch("/todos", onSuccess, shouldRefetch);
 

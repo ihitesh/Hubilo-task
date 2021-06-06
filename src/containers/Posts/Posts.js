@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { PostActionTypes } from "../../redux/actionCreators";
@@ -27,9 +27,13 @@ const Posts = () => {
   // Keeping Posts in redux because when we create a new post, our API does not store that in database, so when we get all posts data again we will not get posts created by us (If we keep it in local state).
   const allPosts = useSelector((state) => state.posts);
 
-  const onSuccess = (posts) => {
-    dispatch({ type: PostActionTypes.SAVE, payload: { posts } });
-  };
+  const onSuccess = useCallback(
+    (posts) => {
+      dispatch({ type: PostActionTypes.SAVE, payload: { posts } });
+    },
+    [dispatch]
+  );
+
   const shouldRefetch = !allPosts.length;
   const [isLoading, error] = useAsyncFetch("/posts", onSuccess, shouldRefetch);
 

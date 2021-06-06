@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Album, Loading } from "../../components";
@@ -31,9 +31,13 @@ const Albums = () => {
 
   const allAlbums = useSelector((state) => state.albums);
 
-  const onSuccess = (albums) => {
-    dispatch({ type: AlbumActionTypes.SAVE, payload: { albums } });
-  };
+  const onSuccess = useCallback(
+    (albums) => {
+      dispatch({ type: AlbumActionTypes.SAVE, payload: { albums } });
+    },
+    [dispatch]
+  );
+
   const shouldRefetch = !allAlbums.length;
   const [isLoading, error] = useAsyncFetch("/albums", onSuccess, shouldRefetch);
 
